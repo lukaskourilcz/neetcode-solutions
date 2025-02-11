@@ -52,7 +52,7 @@ class LinkedList {
 
     if (index >= this.length) {
       this.append(value);
-      return
+      return;
     }
 
     if (index === 0) {
