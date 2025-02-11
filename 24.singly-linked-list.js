@@ -56,12 +56,16 @@ class LinkedList {
       return "invalid";
     }
 
+    if (index >= this.length) {
+      return this.append(value);
+    }
+
     const newNode = new Node(value);
 
     if (index === 0) {
       newNode.next = this.head;
       this.head = newNode;
-      return
+      return;
     }
 
     let current = this.head;
@@ -79,6 +83,28 @@ class LinkedList {
     newNode.next = current.next;
     current.next = newNode;
   }
+  delete(index) {
+    if (this.head === null) {
+      return "nothing to delete";
+    }
+    if (index === 0) {
+      this.head = this.head.next;
+      return;
+    }
+    let prev = null;
+    let current = this.head;
+    let position = 0
+
+    while (current !== null && position < index) {
+      prev = current;
+      current = current.next;
+      position++
+    }
+    if (current === null) {
+      return;
+    }
+    prev.next = current.next;
+  }
 }
 
 const myLinkedList = new LinkedList(10);
@@ -86,4 +112,5 @@ myLinkedList.append(5);
 myLinkedList.append(16);
 myLinkedList.prepend(1);
 myLinkedList.insert(2, 99);
+myLinkedList.delete(0)
 console.log(myLinkedList.printList());
