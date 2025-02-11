@@ -51,59 +51,60 @@ class LinkedList {
     }
     return array;
   }
-  insert(index, value) {
-    if (index < 0) {
-      return "invalid";
+
+  traverseToIndex(index) {
+    let counter = 0;
+    let currentNode = this.head;
+    while (counter !== index) {
+      currentNode = currentNode.next;
+      counter++;
     }
+    return currentNode;
+  }
+
+  insert(index, value) {
+    const newNode = new Node(value);
 
     if (index >= this.length) {
-      return this.append(value);
+      this.append(value);
+      return
     }
-
-    const newNode = new Node(value);
 
     if (index === 0) {
       newNode.next = this.head;
       this.head = newNode;
+      this.length++;
       return;
     }
 
-    let current = this.head;
-    let position = 0;
-
-    while (position < index - 1 && current !== null) {
-      current = current.next;
-      position += 1;
-    }
-
-    if (current === null) {
-      return "out of reach";
-    }
-
-    newNode.next = current.next;
-    current.next = newNode;
+    const leader = this.traverseToIndex(index - 1);
+    const holdingPointer = leader.next;
+    leader.next = newNode;
+    newNode.next = holdingPointer;
+    this.length++;
   }
-  delete(index) {
+
+  remove(index) {
     if (this.head === null) {
       return "nothing to delete";
     }
+    if (index >= this.length || index < 0) {
+      return "Index out of range";
+    }
     if (index === 0) {
       this.head = this.head.next;
+      this.length--;
       return;
     }
-    let prev = null;
-    let current = this.head;
-    let position = 0
+    const leader = this.traverseToIndex(index - 1);
+    const nodeToDelete = leader.next;
+    leader.next = nodeToDelete.next;
 
-    while (current !== null && position < index) {
-      prev = current;
-      current = current.next;
-      position++
+    if (nodeToDelete === this.tail) {
+      this.tail = leader;
     }
-    if (current === null) {
-      return;
-    }
-    prev.next = current.next;
+
+    this.length--;
   }
 }
 
@@ -112,5 +113,5 @@ myLinkedList.append(5);
 myLinkedList.append(16);
 myLinkedList.prepend(1);
 myLinkedList.insert(2, 99);
-myLinkedList.delete(0)
+myLinkedList.remove(4);
 console.log(myLinkedList.printList());
