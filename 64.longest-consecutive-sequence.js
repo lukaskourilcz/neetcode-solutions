@@ -9,6 +9,8 @@ class Solution {
         let longest = 1;
         let currentStreak = 1;
 
+        if(nums.length === 0) return 0
+
         for (let i = 1; i < sorted.length; i++) {
             if (sorted[i] === sorted[i - 1] + 1) {
                 currentStreak++;
